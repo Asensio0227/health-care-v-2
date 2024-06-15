@@ -1,7 +1,35 @@
 {
   "expo": {
-    "name": "health",
-    "slug": "health",
-    "version": "1.0.0"
+    "name": "healthCare",
+    "slug": "healthCare",
+    "version": "2.0.0",
+    "plugins": ["expo-font"],
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.skycoding.HealthCare"
+    },
+    "android": {
+      "googleServicesFile": "./android/app/google-services.json",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.skycoding.HealthCare",
+      "versionCode": 4
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "276d46d9-bf18-4b2f-a9c8-f789e075536e"
+      }
+    }
   }
 }
