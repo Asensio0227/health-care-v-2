@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { Alert, ToastAndroid } from 'react-native';
+import { ToastAndroid } from 'react-native';
 import * as Yup from 'yup';
 
-import { useNavigation } from '@react-navigation/native';
 import { updateProfile } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
 import { auth, db } from '../../firebase';
 import Setup from '../components/Setup';
 import { useGlobalContext } from '../context/context';
+import usePushNotifications from '../hooks/usePushNotifications';
 import { uploadImage } from '../utils/storage';
 
 const validateSchema = Yup.object().shape({
@@ -43,7 +43,7 @@ function LandingScreen() {
   const [error, setError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { setUsers, users } = useGlobalContext();
-  const navigation = useNavigation();
+  const { expoPushToken } = usePushNotifications();
 
   const handleSubmit = async (userInfo) => {
     setIsLoading(true);
@@ -69,7 +69,11 @@ function LandingScreen() {
 
         await Promise.all([
           updateProfile(user, userData),
-          setDoc(doc(db, 'doctors', user.uid), { ...userData, uid: user.uid }),
+          setDoc(doc(db, 'doctors', user.uid), {
+            ...userData,
+            uid: user.uid,
+            expoToken: expoPushToken,
+          }),
         ]);
 
         setIsLoading(false);

@@ -13,6 +13,8 @@ function ProfileScreen() {
   const { setUsers } = useGlobalContext();
   const user = useGetUser();
   const navigation = useNavigation();
+  const city = user?.location && user.location.city;
+  const country = user?.location && user.location.country;
 
   return (
     <>
@@ -23,9 +25,7 @@ function ProfileScreen() {
         dob={user && user.dob}
         gender={user && user.sex}
         email={user && user.email}
-        physicalAddress={`${user.location && user.location.city}, ${
-          user.location && user.location?.country
-        }`}
+        physicalAddress={`${city}, ${country}`}
         hospital={user && user.hospitalName}
         phoneNumber={user && user.phoneNumber}
         LogOutComponent={

@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "healthCare",
+    "name": "HealthCare",
     "slug": "healthCare",
     "version": "2.0.0",
     "plugins": ["expo-font"],
@@ -15,7 +15,7 @@
       "bundleIdentifier": "com.skycoding.HealthCare"
     },
     "android": {
-      "googleServicesFile": "./android/app/google-services.json",
+      "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"

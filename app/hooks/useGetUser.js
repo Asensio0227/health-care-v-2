@@ -13,8 +13,12 @@ function useGetUser() {
   useFocusEffect(
     useCallback(() => {
       (async () => {
-        const user = await getDoc(qUser);
-        setUser(user.data());
+        try {
+          const user = await getDoc(qUser);
+          setUser(user.data());
+        } catch (error) {
+          console.log(error);
+        }
       })();
     }, [userId])
   );

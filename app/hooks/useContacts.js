@@ -61,6 +61,7 @@ export function mapDoc(doc = DocumentSnapshot) {
     contactName: `${doc.data().displayName} ${doc.data().surname}`,
     email: doc.data().email,
     image: doc.data().photoURL,
+    expoToken: doc.data()?.expoToken,
   };
 }
 

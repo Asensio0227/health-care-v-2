@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "350705267335",
+    "project_id": "healthcare-d570f",
+    "storage_bucket": "healthcare-d570f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:350705267335:android:ac679ff5901d93e3033e22",
+        "android_client_info": {
+          "package_name": "com.skycoding.HealthCare"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAoLEK-wQoqc2T02m47_mZGJhzd6AQlm20"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -13,6 +13,8 @@ import 'react-native-get-random-values';
 import { GiftedChat } from 'react-native-gifted-chat';
 import { auth, db } from '../../firebase';
 import { pickerImage, uploadImage } from '../utils/storage';
+import useGetUser from './useGetUser';
+import { sendPushNotification } from './usePushNotifications';
 
 function useChat() {
   const uuidRef = useRef(nanoid());
@@ -28,14 +30,21 @@ function useChat() {
   const [modalVisible, setModalVisible] = useState(true);
   const [selectedImageView, setSelectedImageView] = useState('');
   const { currentUser } = auth;
+  const user = useGetUser();
 
-  const senderUser = currentUser.photoURL
-    ? {
-        name: currentUser.displayName,
-        _id: currentUser.uid,
-        avatar: currentUser.photoURL,
-      }
-    : { name: currentUser.displayName, _id: currentUser.uid };
+  const senderUser =
+    currentUser.photoURL && user
+      ? {
+          name: currentUser.displayName,
+          _id: currentUser.uid,
+          expoToken: user?.expoToken,
+          surname: user.surname,
+        }
+      : {
+          name: currentUser.displayName,
+          _id: currentUser.uid,
+          avatar: currentUser.photoURL,
+        };
 
   useEffect(() => {
     (async () => {
@@ -43,6 +52,8 @@ function useChat() {
         const currUserData = {
           displayName: currentUser.displayName,
           email: currentUser.email,
+          expoToken: user.expoToken,
+          surname: user.surname,
         };
 
         if (currentUser.photoURL) {
@@ -52,6 +63,7 @@ function useChat() {
           displayName: userB.contactName || userB.displayName || '',
           surname: userB.surname,
           email: userB.email,
+          expoToken: userB.expoToken,
         };
         if (userB.photoURL) {
           userBData.photoURL = userB.photoURL;
@@ -72,7 +84,7 @@ function useChat() {
         await sendImage(selectedImage.uri, numberHash);
       }
     })();
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     const unsubscribe = onSnapshot(roomMessageRef, (querySnapshot) => {
@@ -92,16 +104,23 @@ function useChat() {
 
   const appendMessages = useCallback(
     (messages) => {
-      setMessages((prevMessages) => GiftedChat.append(prevMessages, messages));
+      setMessages((prevMessages) => {
+        return GiftedChat.append(prevMessages, messages);
+      });
     },
     [messages, selectedImageView]
   );
 
   const onSend = async (messages = []) => {
     const writes = messages.map((msg) => addDoc(roomMessageRef, msg));
+    const msg = messages.map((msg) => {
+      const { text, user } = msg;
+      return { text, user };
+    });
+
     const lastMessage = messages[messages.length - 1];
     writes.push(updateDoc(roomRef, { lastMessage }));
-    await Promise.all(writes);
+    await Promise.all([writes, sendPushNotification(userB.expoToken, msg)]);
   };
 
   async function sendImage(uri, roomPath) {

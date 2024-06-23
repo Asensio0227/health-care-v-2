@@ -3,16 +3,14 @@ import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { onAuthStateChanged } from 'firebase/auth';
 import { useCallback, useEffect, useState } from 'react';
-import { View } from 'react-native';
+import OffLineNotice from './app/components/OffLineNotice';
 import Screen from './app/components/Screen';
-import colors from './app/config/colors';
 import Wrapper from './app/context/Wrapper';
 import { useGlobalContext } from './app/context/context';
 import usePushNotifications from './app/hooks/usePushNotifications';
 import AppNavigation from './app/navigation/AppNavigation';
 import Auth from './app/navigation/AuthNavigation';
-import Home from './app/navigation/HomeNavigation';
-import SignUpScreen from './app/screens/SignUpScreen';
+import { navigationRef } from './app/navigation/rootNavigation';
 import { auth } from './firebase';
 
 // npx expo install expo-dev-client;
@@ -24,7 +22,7 @@ function App() {
   const [isReady, setIsReady] = useState(false);
   const [fontsLoaded, fontError] = useFonts({});
   const [loading, setLoading] = useState(false);
-  const { expoPushToken, notification } = usePushNotifications();
+  usePushNotifications();
 
   const onLayoutRootView = useCallback(async () => {
     if (isReady) {
@@ -56,7 +54,8 @@ function App() {
 
   return (
     <Screen onLayout={onLayoutRootView}>
-      <NavigationContainer>
+      <OffLineNotice />
+      <NavigationContainer ref={navigationRef}>
         {users ? <AppNavigation /> : <Auth />}
       </NavigationContainer>
       {/* <NavigationContainer>{users ? <Home /> : <Auth />}</NavigationContainer> */}

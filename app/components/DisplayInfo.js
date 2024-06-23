@@ -152,7 +152,10 @@ function DisplayInfo({
               backgroundColor={colors.iconGray}
               size={30}
             />
-            <AppText title='input' style={styles.text}>
+            <AppText
+              title='input'
+              style={[styles.text, { textTransform: 'lowercase' }]}
+            >
               email {email}
             </AppText>
           </View>
@@ -276,7 +279,7 @@ const styles = StyleSheet.create({
     height: 200,
     marginBottom: 5,
     position: 'relative',
-    width,
+    width: '100%',
   },
   btn: {
     borderColor: colors.secondary,

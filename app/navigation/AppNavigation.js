@@ -14,59 +14,58 @@ function AppNavigation() {
 
   return (
     <Tab.Navigator>
-      {users.emailVerified === false ||
-        (users.displayName === null ? (
+      {users.emailVerified === false || users.displayName === null ? (
+        <Tab.Screen
+          options={{ headerTitle: 'Welcome to HealthCare' }}
+          name='Landing'
+          component={LandingScreen}
+        />
+      ) : (
+        <>
           <Tab.Screen
-            options={{ headerTitle: 'Welcome to HealthCare' }}
-            name='Landing'
-            component={LandingScreen}
-          />
-        ) : (
-          <>
-            <Tab.Screen
-              options={{
-                tabBarIcon: ({ focused }) => (
+            options={{
+              tabBarIcon: ({ focused }) => (
+                <MaterialCommunityIcons
+                  name='home'
+                  color={focused ? colors.secondary : colors.primary}
+                  size={24}
+                />
+              ),
+              tabBarLabel: ({ focused }) =>
+                focused ? (
                   <MaterialCommunityIcons
                     name='home'
                     color={focused ? colors.secondary : colors.primary}
                     size={24}
                   />
-                ),
-                tabBarLabel: ({ focused }) =>
-                  focused ? (
-                    <MaterialCommunityIcons
-                      name='home'
-                      color={focused ? colors.secondary : colors.primary}
-                      size={24}
-                    />
-                  ) : null,
-              }}
-              name='Home'
-              component={HomeNavigation}
-            />
-            <Tab.Screen
-              options={{
-                tabBarIcon: ({ focused }) => (
+                ) : null,
+            }}
+            name='Home'
+            component={HomeNavigation}
+          />
+          <Tab.Screen
+            options={{
+              tabBarIcon: ({ focused }) => (
+                <MaterialCommunityIcons
+                  name='chat'
+                  color={focused ? colors.secondary : colors.primary}
+                  size={24}
+                />
+              ),
+              tabBarLabel: ({ focused }) =>
+                focused ? (
                   <MaterialCommunityIcons
                     name='chat'
                     color={focused ? colors.secondary : colors.primary}
                     size={24}
                   />
-                ),
-                tabBarLabel: ({ focused }) =>
-                  focused ? (
-                    <MaterialCommunityIcons
-                      name='chat'
-                      color={focused ? colors.secondary : colors.primary}
-                      size={24}
-                    />
-                  ) : null,
-              }}
-              name='Message'
-              component={ChatNavigation}
-            />
-          </>
-        ))}
+                ) : null,
+            }}
+            name='Message'
+            component={ChatNavigation}
+          />
+        </>
+      )}
     </Tab.Navigator>
   );
 }

@@ -47,7 +47,7 @@ function Chat() {
         onSend={onSend}
         messages={messages}
         user={senderUser}
-        renderAvatar={null}
+        // renderAvatar={null}
         alwaysShowSend
         renderActions={(props) => (
           <Actions

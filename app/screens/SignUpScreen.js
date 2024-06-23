@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { ScrollView, StyleSheet, ToastAndroid } from 'react-native';
 import * as Yup from 'yup';
 
-import { auth, signUp } from '../api/auth';
+import { auth } from '../../firebase';
+import { signUp } from '../api/auth';
 import ActivityIndicator from '../components/ActivityIndicator';
 import Form from '../components/Forms/AppForm';
 import FormField from '../components/Forms/AppFormField';
@@ -40,6 +41,7 @@ function SignUpScreen() {
       console.log(error);
     }
   };
+
   return (
     <ScrollView>
       <ActivityIndicator visible={loading} />
@@ -83,7 +85,7 @@ function SignUpScreen() {
 const styles = StyleSheet.create({
   container: {
     padding: 10,
-    marginTop: 10,
+    marginTop: 50,
   },
   input: {
     color: colors.medium,
