@@ -7,39 +7,42 @@ import ContactItem from '../components/Contact/ContactItem';
 import colors from '../config/colors';
 import { useGlobalContext } from '../context/context';
 import useContacts from '../hooks/useContacts';
+import useRoom from '../hooks/useRoom';
 
 function ChatsScreen() {
-  const currentUser = auth.currentUser;
-  const { rooms, setRooms, setUnFilteredRooms } = useGlobalContext();
   const { contacts } = useContacts();
+  const { rooms, getUserB } = useRoom();
 
-  const chatsQuery = query(
-    collection(db, 'rooms'),
-    where('participantsArray', 'array-contains', currentUser.email)
-  );
+  // const currentUser = auth.currentUser;
+  // const { rooms, setRooms, setUnFilteredRooms } = useGlobalContext();
 
-  useEffect(() => {
-    const unsubscribe = onSnapshot(chatsQuery, (querySnapshot) => {
-      const parsedChats = querySnapshot.docs.map((doc) => ({
-        ...doc.data(),
-        id: doc.id,
-        userB: doc
-          .data()
-          .participants.find((p) => p.email !== currentUser.email),
-      }));
-      setUnFilteredRooms(parsedChats);
-      setRooms(parsedChats.filter((doc) => doc.lastMessage));
-    });
-    return () => unsubscribe();
-  }, []);
+  // const chatsQuery = query(
+  //   collection(db, 'rooms'),
+  //   where('participantsArray', 'array-contains', currentUser.email)
+  // );
 
-  function getUserB(user, contacts) {
-    const userContact = contacts.find((c) => c.email === user.email);
-    if (userContact && userContact.contactName) {
-      return { ...user, contactName: userContact.contactName };
-    }
-    return user;
-  }
+  // useEffect(() => {
+  //   const unsubscribe = onSnapshot(chatsQuery, (querySnapshot) => {
+  //     const parsedChats = querySnapshot.docs.map((doc) => ({
+  //       ...doc.data(),
+  //       id: doc.id,
+  //       userB: doc
+  //         .data()
+  //         .participants.find((p) => p.email !== currentUser.email),
+  //     }));
+  //     setUnFilteredRooms(parsedChats);
+  //     setRooms(parsedChats.filter((doc) => doc.lastMessage));
+  //   });
+  //   return () => unsubscribe();
+  // }, []);
+
+  // function getUserB(user, contacts) {
+  //   const userContact = contacts.find((c) => c.email === user.email);
+  //   if (userContact && userContact.contactName) {
+  //     return { ...user, contactName: userContact.contactName };
+  //   }
+  //   return user;
+  // }
 
   return (
     <>

@@ -4,6 +4,9 @@
     "slug": "healthCare",
     "version": "2.0.0",
     "plugins": ["expo-font"],
+    "notification": {
+      "iosDisplayInForeground": true
+    },
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",

@@ -3,14 +3,17 @@ import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 import { useEffect, useRef, useState } from 'react';
 import { Linking, Platform } from 'react-native';
+import ContactItem from '../components/Contact/ContactItem';
 import navigation from '../navigation/rootNavigation';
+import useContacts from './useContacts';
+import useRoom from './useRoom';
 
 function usePushNotifications() {
   Notifications.setNotificationHandler({
     handleNotification: async () => ({
       shouldPlaySound: true,
       shouldShowAlert: true,
-      shouldSetBadge: true,
+      shouldSetBadge: false,
     }),
   });
   const [expoPushToken, setExpoPushToken] = useState(undefined);
@@ -20,17 +23,15 @@ function usePushNotifications() {
 
   const lastNotificationResponse = Notifications.useLastNotificationResponse();
 
-  console.log(`'''last`);
-  console.log(lastNotificationResponse);
-  console.log(`'''last`);
   useEffect(() => {
     if (lastNotificationResponse) {
       const route = JSON.stringify(
         lastNotificationResponse.notification.request.content.data.route
       );
-
-      //use some function to return the correct screen by route
-      navigation.getFullPath(JSON.parse(route));
+      console.log(`====route===`);
+      console.log(route);
+      console.log(`====route===`);
+      navigation.navigate('Chats');
     }
   }, [lastNotificationResponse]);
 
@@ -72,7 +73,7 @@ function usePushNotifications() {
     registerForPushNotificationsAsync().then((token) => {
       setExpoPushToken(token.data);
     });
-    Notifications.addPushTokenListener(navigation.navigate('Chat'));
+    // Notifications.addListener(navigation.navigate('Chat'));
 
     notificationListener.current =
       Notifications.addNotificationReceivedListener((notification) => {
@@ -82,6 +83,9 @@ function usePushNotifications() {
     responseListener.current =
       Notifications.addNotificationResponseReceivedListener((response) => {
         const url = response.notification.request.content.data.url;
+        console.log(`======url=====`);
+        console.log(response.notification.request.content);
+        console.log(`======url=====`);
         Linking.openURL(url);
       });
 
@@ -109,7 +113,7 @@ export async function sendPushNotification(expoPushToken, msg) {
         sound: 'default',
         title: 'New Message',
         body: text,
-        data: user,
+        data: { user, url: 'Chat' },
       };
     });
 
